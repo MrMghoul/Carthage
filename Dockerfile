@@ -1,8 +1,9 @@
-FROM node:18-alpine
+FROM node:18
 
-# Désactiver IPv6 complètement au niveau système
-RUN echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf && \
-    echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
+# Désactiver IPv6 au niveau du kernel
+RUN sysctl -w net.ipv6.conf.all.disable_ipv6=1 && \
+    sysctl -w net.ipv6.conf.default.disable_ipv6=1 && \
+    sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 
 WORKDIR /app
 
@@ -21,6 +22,6 @@ RUN npm run build
 # Exposer le port
 EXPOSE 3000
 
-# Démarrer (package.json start script inclut --dns-result-order=ipv4first)
+# Démarrer
 CMD ["npm", "start"]
 CMD ["npm", "start"]
