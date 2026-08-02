@@ -1,0 +1,4 @@
+# Fichiers sensibles - ne jamais commit sur Git
+.env
+node_modules/
+dist/
