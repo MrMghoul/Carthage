@@ -17,9 +17,6 @@ RUN npm run build
 # Exposer le port
 EXPOSE 3000
 
-# Désactiver IPv6 et forcer IPv4
-ENV NODE_OPTIONS="--dns-result-order=ipv4first"
-
-# Démarrer
+# Démarrer (package.json start script inclut --dns-result-order=ipv4first)
 CMD ["npm", "start"]
 CMD ["npm", "start"]
