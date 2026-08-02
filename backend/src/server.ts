@@ -11,7 +11,7 @@ import ordersRoutes from './routes/orders';
 
 dotenv.config();
 
-const resolve4 = promisify(dns.resolve4);
+const lookup = promisify(dns.lookup);
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -46,12 +46,10 @@ const resolveSupabaseURL = async () => {
     const hostname = match[3];
     try {
       console.log(`[DNS] Resolving ${hostname} to IPv4...`);
-      const addresses = await resolve4(hostname);
-      if (addresses.length > 0) {
-        const ipv4 = addresses[0];
-        console.log(`[DNS] Resolved ${hostname} → ${ipv4}`);
-        process.env.DATABASE_URL = dbUrl.replace(hostname, ipv4);
-      }
+      // Utiliser dns.lookup() avec family: 4 pour forcer IPv4
+      const address = await lookup(hostname, { family: 4 });
+      console.log(`[DNS] Resolved ${hostname} → ${address.address}`);
+      process.env.DATABASE_URL = dbUrl.replace(hostname, address.address);
     } catch (err) {
       console.warn(`[DNS] Could not resolve ${hostname}, using original:`, err);
     }
