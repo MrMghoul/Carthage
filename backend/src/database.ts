@@ -1,17 +1,12 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
-import dns from 'dns';
-
-// Force IPv4
-dns.setDefaultResultOrder('ipv4first');
 
 dotenv.config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
-  family: 4,
-} as any);
+});
 
 export const initDatabase = async (): Promise<void> => {
   // Créer la table avec le nouveau schéma (roles = tableau)
