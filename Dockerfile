@@ -1,10 +1,5 @@
 FROM node:18
 
-# Désactiver IPv6 au niveau du kernel
-RUN sysctl -w net.ipv6.conf.all.disable_ipv6=1 && \
-    sysctl -w net.ipv6.conf.default.disable_ipv6=1 && \
-    sysctl -w net.ipv6.conf.lo.disable_ipv6=1
-
 WORKDIR /app
 
 # Copier et installer les dépendances du backend
