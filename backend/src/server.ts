@@ -46,12 +46,12 @@ const resolveSupabaseURL = async () => {
     const hostname = match[3];
     try {
       console.log(`[DNS] Resolving ${hostname} to IPv4...`);
-      // Utiliser dns.lookup() avec family: 4 pour forcer IPv4
-      const address = await lookup(hostname, { family: 4 });
+      // Utiliser dns.lookup() avec family: 4 et hints pour forcer IPv4
+      const address = await lookup(hostname, { family: 4, hints: dns.ADDRCONFIG });
       console.log(`[DNS] Resolved ${hostname} → ${address.address}`);
       process.env.DATABASE_URL = dbUrl.replace(hostname, address.address);
     } catch (err) {
-      console.warn(`[DNS] Could not resolve ${hostname}, using original:`, err);
+      console.warn(`[DNS] Could not resolve ${hostname}, using original hostname (pg will handle it)`, (err as Error).message);
     }
   }
 };
