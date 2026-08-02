@@ -1,12 +1,15 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
+import dns from 'dns';
+
+// Force IPv4
+dns.setDefaultResultOrder('ipv4first');
 
 dotenv.config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
-  family: 4,  // Force IPv4
 });
 
 export const initDatabase = async (): Promise<void> => {
